@@ -1,28 +1,28 @@
 version: '3'
 services:
   nginx:
-    container_name: nginx
+    container_name: nginx_latest
     build: ./infrastructure/nginx/
     ports:
-      - "8080:80"
+      - "80:80"
     links:
       - php
     volumes:
-      - ./html:/usr/share/nginx/html
+      - ./app:/usr/share/nginx/html
   php:
-    container_name: php
+    container_name: php7.4
     build: ./infrastructure/php/
     ports:
       - "9000:9000"
     depends_on:
       - mariadb
-    # seems like fpm receives the full path from nginx
+    # seems like fpm receives the full path from nginx 
     # and tries to find the files in this dock, so it must
     # be the same as nginx.root
     volumes:
-      - ./html:/usr/share/nginx/html
+      - ./app:/usr/share/nginx/html
   mariadb:
-    container_name: mariadb
+    container_name: mariadb10.4
     build: ./infrastructure/mariadb
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
@@ -32,4 +32,4 @@ services:
     volumes:
       - ./mariadb:/var/lib/mysql
     ports:
-      - "3322:3306"
+      - "3306:3306"
