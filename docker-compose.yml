@@ -35,10 +35,10 @@ services:
     container_name: mariadb10.4
     build: ./infrastructure/mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: mariadb
-      MYSQL_USER: rootuser
-      MYSQL_PASSWORD: rootpass
+      MYSQL_ROOT_PASSWORD: doc-comp_rootpass
+      MYSQL_DATABASE: doc-comp_database
+      MYSQL_USER: doc-comp_user
+      MYSQL_PASSWORD: doc-comp_pass
     volumes:
       - ./mariadb:/var/lib/mysql
     ports:
