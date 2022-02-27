@@ -30,7 +30,8 @@ services:
     volumes:
       - ./app:/usr/share/nginx/html
     networks:
-      - nginx-php74-mariadb-node  
+      - nginx-php74-mariadb-node
+    working_dir: /usr/share/nginx/html
   mariadb:
     container_name: mariadb10.4
     build: ./infrastructure/mariadb
@@ -46,13 +47,15 @@ services:
       - "4306:3306"
     networks:
       - nginx-php74-mariadb-node  
-  node:
-    container_name: node
-    build: ./infrastructure/node
+  #node:
+    #container_name: node
+    #build: ./infrastructure/node
     #command: bash -c "npm install"
-    volumes:
-      - ./app:/usr/share/nginx/html
-    working_dir: /usr/share/nginx/html
-    entrypoint: ['npm','install']
-    networks:
-      - nginx-php74-mariadb-node  
+    #volumes:
+    #  - ./app:/usr/share/nginx/html
+    #working_dir: /usr/share/nginx/html
+    #expose:
+    #  - "8081"
+    #command: sh -c "npm install -g npm-check-updates && ncu --upgrade && npm install -g npm@8.5.2"
+    #networks:
+    #  - nginx-php74-mariadb-node  
