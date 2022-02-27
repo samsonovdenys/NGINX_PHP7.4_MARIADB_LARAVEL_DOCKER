@@ -1,14 +1,22 @@
 version: '3'
+
+networks:
+  nginx-php74-mariadb-node:
+
 services:
   nginx:
     container_name: nginx_latest
     build: ./infrastructure/nginx/
     ports:
-      - "80:80"
+    # -"browser PORT":"nginx.conf container port"
+      - "8080:80"
     links:
       - php
     volumes:
       - ./app:/usr/share/nginx/html
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - nginx-php74-mariadb-node
   php:
     container_name: php7.4
     build: ./infrastructure/php/
@@ -21,6 +29,8 @@ services:
     # be the same as nginx.root
     volumes:
       - ./app:/usr/share/nginx/html
+    networks:
+      - nginx-php74-mariadb-node  
   mariadb:
     container_name: mariadb10.4
     build: ./infrastructure/mariadb
@@ -32,4 +42,17 @@ services:
     volumes:
       - ./mariadb:/var/lib/mysql
     ports:
-      - "3306:3306"
+    # -"browser PORT":"container port"
+      - "4306:3306"
+    networks:
+      - nginx-php74-mariadb-node  
+  node:
+    container_name: node
+    build: ./infrastructure/node
+    #command: bash -c "npm install"
+    volumes:
+      - ./app:/usr/share/nginx/html
+    working_dir: /usr/share/nginx/html
+    entrypoint: ['npm','install']
+    networks:
+      - nginx-php74-mariadb-node  
